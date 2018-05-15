@@ -1,0 +1,32 @@
+games:
+{
+	_id: "1",
+	language: "es",
+	host: "name_1",
+	players: {
+		name_1: {
+			stack: [...]
+		}
+	},
+	inLobby: false,
+	playing: false,
+	winner: null,
+	startTime: (Date),
+	endTime: (Date),
+
+	startPage: "start_title",
+	endPage: "end_title",
+	graph: {
+		nodes: [
+			"start_title",
+			"page_1"
+		],
+		links: [
+			{
+				source: "start_title",
+				target: "page_1",
+				createdAt: (Date)
+			}
+		]
+	}
+}

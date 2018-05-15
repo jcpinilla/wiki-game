@@ -2,14 +2,12 @@ games:
 {
 	_id: "1",
 	language: "es",
-	host: "name_1",
-	players: {
-		name_1: {
-			stack: [...]
-		}
-	},
+	host: "un_1",
+	players: [
+		"un_1"
+	],
 	inLobby: false,
-	playing: false,
+	playing: true,
 	winner: null,
 	startTime: (Date),
 	endTime: (Date),
@@ -18,14 +16,18 @@ games:
 	endPage: "end_title",
 	graph: {
 		nodes: [
-			"start_title",
-			"page_1"
+			{page: "start_title"}
 		],
 		links: [
 			{
 				source: "start_title",
 				target: "page_1",
-				createdAt: (Date)
+				travels: [
+					{
+						traveledBy: "un_1",
+						traveledAt: (Date)
+					}
+				]
 			}
 		]
 	}

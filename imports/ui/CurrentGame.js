@@ -13,14 +13,25 @@ class CurrentGame extends Component {
 		let inLobby = this.props.inLobby;
 		let playing = this.props.playing;
 		let gameId = this.props.gameId;
+		let host = this.props.host;
 		let players = this.props.players;
+		let language = this.props.language;
+		let startPage = this.props.startPage;
+		let endPage = this.props.endPage;
 		if (inLobby) {
 			return <Lobby
 				gameId={gameId}
-				players={players} />;
+				players={players}
+				host={host}
+				language={language}
+				startPage={startPage}
+				endPage={endPage} />;
 		}
 		if (playing) {
-			return <Navigator />;
+			return <Navigator
+				language={language}
+				startPage={startPage}
+				endPage={endPage} />;
 		} else {
 			return <Overview />;
 		}

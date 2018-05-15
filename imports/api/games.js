@@ -17,20 +17,15 @@ Meteor.methods({
 
 		let gameId = "" + (Games.find().count() + 1);
 		let host = Meteor.user().username;
-		let players = {
-			[host]: {
-				stack: []
-			}
-		};
 		let newGame = {
 			_id: gameId,
 			language,
 			host,
-			players,
+			players: [host],
 			inLobby: true,
 			playing: false,
 			winner: null,
-			startTime: new Date(),
+			startTime: null,
 			endTime: null,
 
 			startPage: null,
@@ -56,15 +51,37 @@ Meteor.methods({
 		}
 		let players = game.players;
 		let username = Meteor.user().username;
-		if (username in players) {
+		let alreadyInGame = players.filter(p => p === username).length === 1;
+		if (alreadyInGame) {
 			return {
 				errorMessage: `You are already in the game with ID ${gameId}`
 			};
 		}
-		players[username] = {
-			stack: []
-		};
-		Games.update(gameId, {$set: {players}});
+		Games.update(gameId, {$push: {players: username}});
 		return {ok: true};
+	},
+	"games.setStartEndPages"(gameId, startPage, endPage) {
+		Games.update(gameId, {
+			$set: {
+				startPage,
+				endPage
+			}
+		});
+	},
+	"games.startGame"(gameId) {
+		let game = Games.findOne(gameId);
+		let startPage = game.startPage;
+		Games.update(gameId, {
+			$set: {
+				inLobby: false,
+				playing: true,
+				startTime: new Date()
+			},
+			$push: {
+				"graph.nodes": {
+					page: startPage
+				}
+			}
+		});
 	}
 });

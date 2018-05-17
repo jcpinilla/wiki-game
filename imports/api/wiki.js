@@ -30,9 +30,16 @@ Meteor.methods({
 			break;
 		}
 
+		let startPageNormalized = startPagesObject[startPageNumber].title;
+		let endPageNormalized = endPagesObject[endPageNumber].title;
+		if (startPageNormalized === endPageNormalized) {
+			return {
+				errorMessage: "The start page and end page must be different."
+			};
+		}
 		return {
-			startPage: startPagesObject[startPageNumber].title,
-			endPage: endPagesObject[endPageNumber].title
+			startPage: startPageNormalized,
+			endPage: endPageNormalized
 		};
 	},
 	"wiki.getLinks"(language, page) {

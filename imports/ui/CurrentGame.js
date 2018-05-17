@@ -10,6 +10,7 @@ import { Games } from "../api/games.js";
 
 class CurrentGame extends Component {
 	render() {
+		if (!this.props.host) return <div></div>;
 		let inLobby = this.props.inLobby;
 		let playing = this.props.playing;
 		let gameId = this.props.gameId;
@@ -18,6 +19,10 @@ class CurrentGame extends Component {
 		let language = this.props.language;
 		let startPage = this.props.startPage;
 		let endPage = this.props.endPage;
+		let winner = this.props.winner;
+		let startTime = this.props.startTime;
+		let endTime = this.props.endTime;
+		let graph = this.props.graph;
 		if (inLobby) {
 			return <Lobby
 				gameId={gameId}
@@ -29,11 +34,20 @@ class CurrentGame extends Component {
 		}
 		if (playing) {
 			return <Navigator
+				gameId={gameId}
 				language={language}
 				startPage={startPage}
-				endPage={endPage} />;
+				endPage={endPage}
+				host={host} />;
 		} else {
-			return <Overview />;
+			return <Overview
+				winner={winner}
+				startPage={startPage}
+				endPage={endPage}
+				startTime={startTime}
+				endTime={endTime}
+				host={host}
+				graph={graph} />;
 		}
 	}
 }

@@ -17,10 +17,6 @@ module.exports = {
     ],
     "rules": {
         "no-console": "off",
-        "indent": [
-            "error",
-            "tab"
-        ],
         "quotes": [
             "error",
             "double"

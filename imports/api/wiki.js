@@ -44,7 +44,7 @@ Meteor.methods({
 		};
 	},
 	"wiki.getLinks"(language, page) {
-		let res = HTTP.get(`https://${language}.wikipedia.org/w/api.php?action=query&format=json&generator=links&gpllimit=50&titles=${page}`);
+		let res = HTTP.get(`https://${language}.wikipedia.org/w/api.php?action=query&format=json&generator=links&gpllimit=500&titles=${page}`);
 		let linksObject = res.data.query.pages;
 		let links = [];
 		for (let page in linksObject) {

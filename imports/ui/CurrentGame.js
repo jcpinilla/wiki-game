@@ -15,7 +15,16 @@ class CurrentGame extends Component {
 		let playing = this.props.playing;
 		let gameId = this.props.gameId;
 		let host = this.props.host;
-		let players = this.props.players;
+		// let players = this.props.players;
+		let players = [
+			"juan",
+			"camilo",
+			"pinilla",
+			"ramirez",
+			"juancamilo",
+			"juancamilopinilla",
+			"juancamilopinillaramirez",
+		];
 		let language = this.props.language;
 		let startPage = this.props.startPage;
 		let endPage = this.props.endPage;

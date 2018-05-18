@@ -29,22 +29,28 @@ export default class Create extends Component {
 
 	render() {
 		return (
-			<div>
-				<h1>Create a game:</h1>
-				<label>
-					Language:{" "}
-					<select
-						value={this.state.language}
-						onChange={this.handleLanguageChange}>
-						<option value="es">Spanish</option>
-						<option value="en">English</option>
-					</select>
-				</label>
-				<button
-					type="button"
-					onClick={this.handleCreate}>
-					Create game
-				</button>
+			<div className="create-rc card">
+				<div className="card-body">
+					<h1 className="card-title">Create a game</h1>
+					<div className="card-text">
+						<label>
+							<span className="language-label">I want to play in</span>
+							<select
+								value={this.state.language}
+								onChange={this.handleLanguageChange}>
+								<option value="es">Spanish</option>
+								<option value="en">English</option>
+							</select>
+						</label>
+					</div>
+					<br/>
+					<button
+						className="btn btn-info"
+						type="button"
+						onClick={this.handleCreate}>
+						<i className="fa fa-group fa-2x"></i>
+					</button>
+				</div>
 			</div>
 		);
 	}

@@ -1,0 +1,61 @@
+body {
+	margin: 40px 50px;
+	background-color: #fafafa;
+}
+
+/**/
+.create-rc {
+	margin-top: 20px;
+	margin-bottom: 50px;
+}
+.create-join-rc .card {
+	margin-left: auto;
+	margin-right: auto;
+	width: 430px;
+	border-radius: 60px;
+	text-align: center;
+}
+.create-join-rc .card-text {
+	font-size: 160%;
+}
+.language-label {
+	margin-right: 10px;
+}
+.game-id-input {
+	width: 70px;
+}
+
+/**/
+.lobby-rc button {
+	margin: 5px;
+}
+.lobby-rc .players {
+	margin-top: 30px;
+	width: 400px;
+}
+.from-to {
+	margin-top: 30px;
+	margin-bottom: 30px;
+}
+.from-to h2 {
+	font-size: 120%;
+}
+.from-input {
+	width: 155px;
+}
+.to-input {
+	width: 2000px,
+}
+.players .badge {
+	font-size: 20px;
+	margin: 5px;
+}
+
+/**/
+.current-page-links button {
+	margin: 10px;
+}
+.current-page-links input {
+	margin-top: 10px;
+	margin-bottom: 15px;
+}

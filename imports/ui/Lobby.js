@@ -1,6 +1,8 @@
 import React, { Component } from "react";
 import { Meteor } from "meteor/meteor";
 
+import Summary from "./Summary.js";
+
 export default class Lobby extends Component {
 	constructor(props) {
 		super(props);
@@ -12,6 +14,15 @@ export default class Lobby extends Component {
 		this.handleEndPageInputChange = this.handleEndPageInputChange.bind(this);
 		this.handleValidate = this.handleValidate.bind(this);
 		this.handleStartGame = this.handleStartGame.bind(this);
+		this.handleSelectNewPages = this.handleSelectNewPages.bind(this);
+	}
+
+	handleSelectNewPages() {
+		Meteor.call("games.setStartEndPages",
+			this.props.gameId,
+			null,
+			null
+		);
 	}
 
 	handleStartPageInputChange(event) {
@@ -69,59 +80,89 @@ export default class Lobby extends Component {
 		let isHost = host === Meteor.user().username;
 		let startPage = this.props.startPage;
 		let endPage = this.props.endPage;
+		let language = this.props.language;
 		let pagesValidated = startPage !== null && endPage !== null;
-		let isHostDisplay = (
+		let isHostDisplay = pagesValidated ?
 			<div>
-				<div>
-					<label>
-						Start page:{" "}
+				<button
+					className="btn btn-info"
+					type="button"
+					onClick={this.handleStartGame}>
+					Start game
+				</button>
+				<button
+					className="btn btn-secondary"
+					type="button"
+					onClick={this.handleSelectNewPages}>
+					Select new pages
+				</button>
+			</div> :
+			<div>
+				<div className="from-to">
+					<h2>
+						Go from{" "}
 						<input
+							className="from-input"
 							autoFocus
+							placeholder="a wikipedia page"
 							type="text"
 							value={this.state.startPageInput}
 							onChange={this.handleStartPageInputChange} />
-					</label>
-				</div>
-				<div>
-					<label>
-						End page:{" "}
+						{" "}to{" "}
 						<input
+							className="to-input"
 							type="text"
+							placeholder="another wikipedia page"
 							value={this.state.endPageInput}
 							onChange={this.handleEndPageInputChange} />
-					</label>
+					</h2>
 				</div>
 				<button
+					className="btn btn-info"
 					type="button"
 					onClick={this.handleValidate}>
-					Validate {pagesValidated && "new"} pages
+					Validate pages
 				</button>
-				{pagesValidated &&
-					<button
-						type="button"
-						onClick={this.handleStartGame}>
-						Start game
-					</button>
-				}
-			</div>
-		);
+			</div>;
 		return (
-			<div>
-				<h1>Lobby of game {gameId}</h1>
-				{pagesValidated &&
-					<div>
-						<h2>Game ready</h2>
-						<h3>Waiting for {isHost ? "you" : host} to start the game</h3>
-						<p>Start page: {startPage}</p>
-						<p>End page: {endPage}</p>
+			<div className="row lobby-rc">
+				<div className="col-lg-6">
+					<h1>Lobby of game {gameId}</h1>
+					{pagesValidated &&
+						<div>
+							<h2>Go from {startPage} to {endPage}</h2>
+							<h5>Waiting for {isHost ? "you" : <em>host</em>} to start the game</h5>
+						</div>
+					}
+					{
+						isHost ? isHostDisplay :
+						!pagesValidated && 
+						<h3>
+							<em>{host}</em> is deciding the Wikipedia pages...
+						</h3>
+					}
+					<div className="players">
+						<h2>Players:</h2>
+						{
+							players.map(player =>
+								<div
+									className="badge badge-pill badge-dark"
+									key={player}>
+									{player}
+								</div>
+							)
+						}
 					</div>
-				}
-				{isHost && isHostDisplay}
-				<h2>Players:</h2>
-				{
-					players.map(player => 
-						<div key={player}>{player}</div>
-					)
+				</div>
+				{pagesValidated &&
+					<div className="col-lg-6">
+						<Summary
+							page={startPage}
+							language={language} />
+						<Summary
+							page={endPage}
+							language={language} />
+					</div>
 				}
 			</div>
 		);

@@ -38,18 +38,26 @@ export default class Join extends Component {
 
 	render() {
 		return (
-			<div>
-				<h1>Join a game:</h1>
-				<form onSubmit={this.handleJoin}>
-					<label>
-						Enter the game ID:{" "}
-						<input
-							autoFocus
-							type="text"
-							value={this.state.gameIdInput}
-							onChange={this.handleGameIdInputChange} />
-					</label>
-				</form>
+			<div className="join-rc card">
+				<div className="card-body">
+					<h1 className="card-title">Join a game</h1>
+					<div className="card-text">
+						<form onSubmit={this.handleJoin}>
+							<label>
+								The game ID is{" "}
+								<input
+									className="game-id-input"
+									autoFocus
+									type="text"
+									value={this.state.gameIdInput}
+									onChange={this.handleGameIdInputChange} />
+							</label>
+						</form>
+					</div>
+					<div>
+						<em>Hit <kbd>Enter</kbd> to join</em>
+					</div>
+				</div>
 			</div>
 		);
 	}

@@ -9,10 +9,18 @@ export default class Navigator extends Component {
 		this.goToPage = this.goToPage.bind(this);
 		this.state = {
 			stack: [],
-			links: null
+			links: null,
+			filter: ""
 		};
 		this.handleKeyPress = this.handleKeyPress.bind(this);
 		this.handleEndGameByHost = this.handleEndGameByHost.bind(this);
+		this.handleFilterChange = this.handleFilterChange.bind(this);
+	}
+
+	handleFilterChange(event) {
+		this.setState({
+			filter: event.target.value
+		});
 	}
 
 	componentDidMount() {
@@ -90,35 +98,61 @@ export default class Navigator extends Component {
 		let startPage = this.props.startPage;
 		let endPage = this.props.endPage;
 		let stack = this.state.stack;
-		let links = this.state.links;
 		let currentPage = stack[stack.length-1];
 		let host = this.props.host;
 		let isHost = host === Meteor.user().username;
+		let links = this.state.links;
+		let filter = this.state.filter;
+		if (links && filter) {
+			links = links
+				.filter(link => link.toLowerCase()
+					.includes(filter.toLowerCase()));
+		}
 		return (
-			<div>
-				<h1>Navigator</h1>
-				{isHost &&
-					<button
-						type="button"
-						onClick={this.handleEndGameByHost}>
-						End game
-					</button>
-				}
-				<p><em>Press <strong>w</strong> to go back</em></p>
-				<p>Start page: {startPage}</p>
-				<p>End page: {endPage}</p>
-				<h2>Currently in {currentPage}</h2>
-				{links &&
-					<div>
-						<h2>Links for this page:</h2>
-						{
-							links.map(link =>
-								<Link
-									key={link}
-									page={link}
-									goToPage={this.goToPage} />
-							)
+			<div className="navigator-rc">
+				<div className="row">
+					<div className="col-lg-4">
+						<h3>Go from {startPage} to {endPage}</h3>
+						<p><em>Press <kbd>w</kbd> to go back on history</em></p>
+					</div>
+					<div className="col-lg-4 text-center">
+						<h1>{currentPage}</h1>
+					</div>
+					<div className="col-lg-4 text-right">
+						<h1>Navigator</h1>
+						{isHost &&
+							<button
+								className="btn btn-secondary"
+								type="button"
+								onClick={this.handleEndGameByHost}>
+								End game
+							</button>
 						}
+					</div>
+				</div>
+				{links &&
+					<div className="current-page-links">
+						<h2>Links for this page:</h2>
+						<div>
+							<div className="filter-container text-center">
+								<input
+									value={filter}
+									placeholder="Filter"
+									onChange={this.handleFilterChange}
+									autoFocus
+									type="text"/>
+							</div>
+						</div>
+						<div className="text-center">
+							{
+								links.map(link =>
+									<Link
+										key={link}
+										goToPage={this.goToPage}
+										page={link} />
+								)
+							}
+						</div>
 					</div>
 				}
 			</div>

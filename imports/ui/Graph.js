@@ -1,5 +1,7 @@
 import React, { Component } from "react";
+
 import * as d3 from "d3";
+import contrast from "contrast";
 
 export default class Graph extends Component {
 	constructor(props) {
@@ -34,12 +36,14 @@ export default class Graph extends Component {
 		this.baseRadius = 9;
 		this.biggerRadius = this.baseRadius * 2;
 		this.baseLineStrokeWidth = 8;
+		this.baseCircleStrokeWidth = 1;
+		this.circleStrokeWidthGrowthFactor = 6;
 
 		this.color = d3.scaleOrdinal(d3.schemeCategory20);
 
 		this.simulation = d3.forceSimulation()
 			.force("center", d3.forceCenter(this.centerX, this.centerY))
-			.force("collide", d3.forceCollide(this.baseRadius+10))
+			.force("collide", d3.forceCollide(this.baseRadius+15))
 			.force("charge", d3.forceManyBody()
 				.strength(-50))
 			.force("link", d3.forceLink()
@@ -74,46 +78,79 @@ export default class Graph extends Component {
 			.data(graph.links)
 			.enter()
 			.append("line")
+				.attr("stroke", l => this.color(l.createdBy))
 				.attr("stroke-width", this.baseLineStrokeWidth)
 				.on("mouseover", this.handleMouseOverLine)
 				.on("mouseout", this.handleMouseOutLine);
 
+		this.link
+			.filter(l => l.createdBy !== l.target.discoveredBy)
+			.attr("stroke-dasharray", this.dashArray);
+
 		this.node = svg.append("g")
 			.attr("class", "nodes")
-			.selectAll("circle")
+			.selectAll("g")
 			.data(graph.nodes)
 			.enter()
+			.append("g")
+			.on("mouseover", this.handleMouseOverCircle)
+			.on("mouseout", this.handleMouseOutCircle)
+			.call(d3.drag()
+				.on("start", this.dragStarted)
+				.on("drag", this.dragged)
+				.on("end", this.dragEnded));
+		let startPage = this.props.startPage;
+		this.node
 			.append("circle")
-				.call(d3.drag()
-					.on("start", this.dragStarted)
-					.on("drag", this.dragged)
-					.on("end", this.dragEnded))
 				.attr("r", d => {
 					if (d.page === this.props.endPage) {
 						return this.biggerRadius;
 					}
 					return this.baseRadius;
 				})
-				.on("mouseover", this.handleMouseOverCircle)
-				.on("mouseout", this.handleMouseOutCircle);
-
+			.attr("stroke", "black")
+			.attr("fill", d => 
+				d.page !== startPage ? this.color(d.discoveredBy) : "black"
+			);
+		let hasOtherVisits = this.node
+			.filter(d => d.otherVisits && d.otherVisits.length !== 0);
+		hasOtherVisits
+			.select("circle")
+				.attr("r", this.biggerRadius);
+		hasOtherVisits
+			.append("text")
+				.attr("fill", d => {
+					return contrast(this.color(d.discoveredBy)) === "light" ?
+						"#000" :
+						"#fff";
+				})
+				.attr("font-weight", "bold")
+				.attr("text-anchor", "middle")
+				.attr("alignment-baseline", "central")
+				.text(d => d.otherVisits.length);
+		let endPage = this.props.endPage;
+		this.node
+			.filter(d => d.page === endPage)
+			.append("circle")
+				.attr("r", this.biggerRadius / 2);
 	}
 
 handleMouseOverCircle(d) {
-	let circle = d3.select(d3.event.target);
-	let endPage = this.props.endPage;
-	circle
-		.transition()
-		.attr("r", (d.page === endPage ? this.biggerRadius : this.baseRadius) * this.circleGrowthFactor);
+	console.log("in");
+	d3.select(d3.event.target.parentNode)
+		.select("circle")
+			.transition()
+			.attr("stroke-width", this.baseCircleStrokeWidth * this.circleStrokeWidthGrowthFactor);
 	this.props.setSelectedNode(d);
 }
 
 handleMouseOutCircle(d) {
-	let circle = d3.select(d3.event.target);
-	let endPage = this.props.endPage;
-	circle
-		.transition()	
-		.attr("r", d.page === endPage ? this.biggerRadius : this.baseRadius);
+	console.log("out");
+	let isText = d3.event.target.tagName === "text";
+	if (isText) return;
+	d3.select(d3.event.target)
+			.transition()
+			.attr("stroke-width", this.baseCircleStrokeWidth);
 	this.props.setSelectedNode(null);
 }
 
@@ -149,29 +186,21 @@ handleMouseOutLine(l) {
 	}
 
 	drawNode(node) {
-		let startPage = this.props.startPage;
-		node
-			.attr("stroke", "black")
-			.attr("fill", d => 
-				d.page !== startPage ? this.color(d.discoveredBy) : "black"
-			)
+		node.selectAll("circle")
 			.attr("cx", d => {
 				return d.x;
 			})
 			.attr("cy", d => {
 				return d.y;
 			});
+		node.select("text")
+			.attr("x", d => d.x)
+			.attr("y", d => d.y);
+
 	}
 
 	drawLink(link) {
 		link
-			.attr("stroke", l => this.color(l.createdBy))
-			// .attr("stroke-width", l => {
-			// 	return l.createdBy !== l.target.discoveredBy ? 8 : 4;
-			// })
-			.attr("stroke-dasharray", l => {
-				return l.createdBy !== l.target.discoveredBy ? this.dashArray : null;
-			})
 			.attr("x1", l => l.source.x)
 			.attr("y1", l => l.source.y)
 			.attr("x2", l => l.target.x)
@@ -180,25 +209,32 @@ handleMouseOutLine(l) {
 
 	dragStarted(d) {
 		let startPage = this.props.startPage;
-		if (d.page === startPage) return;
 		if (!d3.event.active) this.simulation.alphaTarget(0.3).restart();
 		d.fx = d.x;
 		d.fy = d.y;
+		if (d.page === startPage) {
+			this.simulation.force("center").x(d.x);
+			this.simulation.force("center").y(d.y);
+		}
 	}
 
 	dragged(d) {
 		let startPage = this.props.startPage;
-		if (d.page === startPage) return;
 		d.fx = d3.event.x;
 		d.fy = d3.event.y;
+		if (d.page === startPage) {
+			this.simulation.force("center").x(d.x);
+			this.simulation.force("center").y(d.y);
+		}
 	}
 
 	dragEnded(d) {
 		let startPage = this.props.startPage;
-		if (d.page === startPage) return;
 		if (!d3.event.active) this.simulation.alphaTarget(0);
-		d.fx = null;
-		d.fy = null;
+		if (d.page !== startPage) {
+			d.fx = null;
+			d.fy = null;
+		}
 	}
 
 	render() {

@@ -7,6 +7,7 @@ Meteor.methods({
 		let endPageQuery = endPage.replace(/\s/g, "%20");
 		let resStartPage = HTTP.get(`https://${language}.wikipedia.org/w/api.php?action=query&format=json&titles=${startPageQuery}`);
 		let startPagesObject = resStartPage.data.query.pages;
+		console.log(startPagesObject);
 		if ("-1" in startPagesObject) {
 			return {
 				errorMessage: `${startPage} page does not exist.`
@@ -51,5 +52,14 @@ Meteor.methods({
 			links.push(linksObject[page].title);
 		}
 		return links;
+	},
+	"wiki.getSummary"(language, page) {
+		let res = HTTP.get(`https://${language}.wikipedia.org/w/api.php?format=json&action=query&prop=extracts&exintro=&explaintext=&titles=${page}`);
+		let pageNumber = null;
+		for (let pn in res.data.query.pages) {
+			pageNumber = pn;
+			break;
+		}
+		return res.data.query.pages[pageNumber].extract;
 	}
 });

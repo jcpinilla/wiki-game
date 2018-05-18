@@ -24,19 +24,19 @@ class App extends Component {
 	}
 
 	render() {
-		// let gameId = this.state.gameId;
-		// let currentUser = this.props.currentUser;
-		// return (
-		// 	<div>
-		// 		<AccountsUIWrapper />
-		// 		{currentUser &&
-		// 			(gameId ?
-		// 				<CurrentGame gameId={gameId} />:
-		// 				<CreateJoin goToGame={this.goToGame} />)
-		// 		}
-		// 	</div>
-		// );
-		
+		let gameId = this.state.gameId;
+		let currentUser = this.props.currentUser;
+		return (
+			<div className="container-fluid">
+				<AccountsUIWrapper />
+				{currentUser &&
+					(gameId ?
+						<CurrentGame gameId={gameId} />:
+						<CreateJoin goToGame={this.goToGame} />)
+				}
+			</div>
+		);
+		/*
 		let winner = "b";
 		let host = "h";
 		let startTime = new Date();
@@ -211,7 +211,7 @@ class App extends Component {
 				endPage={endPage}
 				graph={graph} />
 		);
-	
+	*/
 	}
 }
 

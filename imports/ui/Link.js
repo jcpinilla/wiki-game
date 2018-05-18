@@ -13,13 +13,12 @@ export default class Link extends Component {
 	render() {
 		let page = this.props.page;
 		return (
-			<div>
-				<button
-					type="button"
-					onClick={this.handleClick}>
-					{page}
-				</button>
-			</div>
+			<button
+				className="btn btn-outline-secondary"
+				type="button"
+				onClick={this.handleClick}>
+				<strong>{page}</strong>
+			</button>
 		);
 	}
 }

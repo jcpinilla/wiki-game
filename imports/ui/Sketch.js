@@ -13,7 +13,7 @@ export default class Sketch extends Component {
 				s.fill(s.random(255), 10);
 				s.noStroke();
 				let scx = s.width/3;
-				let scy = 200;
+				let scy = 150;
 				s.ellipse(s.width/2, s.height/2, s.random(scx*2), s.random(scy*2));
 				
 				if (s.mouseX !== 0 && s.mouseY !== 0) {

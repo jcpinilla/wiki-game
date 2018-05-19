@@ -6,6 +6,7 @@ import CreateJoin from "./CreateJoin.js";
 import CurrentGame from "./CurrentGame.js";
 import Header from "./Header.js";
 import Overview from "./Overview.js";
+import Sketch from "./Sketch.js";
 
 class App extends Component {
 	constructor(props) {
@@ -30,25 +31,12 @@ class App extends Component {
 				<Header
 					gameId={gameId}
 					goToGame={this.goToGame}/>
-				{currentUser &&
+				{currentUser ?
 					(gameId ?
 						<CurrentGame gameId={gameId} />:
-						<CreateJoin goToGame={this.goToGame} />)
+						<CreateJoin goToGame={this.goToGame} />) :
+					<Sketch />
 				}
-			  <div className="modal fade" id="myModal">
-			    <div className="modal-dialog">
-			      <div className="modal-content">
-			      
-			        
-			        
-			        <div className="modal-body">
-			        	<button type="button" className="close" data-dismiss="modal">×</button>
-			          Modal body..
-			        </div>
-			        
-			      </div>
-			    </div>
-			  </div>
 			</div>
 		);
 		/*

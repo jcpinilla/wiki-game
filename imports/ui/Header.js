@@ -2,7 +2,6 @@ import React, { Component } from "react";
 import { Meteor } from "meteor/meteor";
 import { withTracker } from "meteor/react-meteor-data";
 import JSAlert from "js-alert";
-// import $ from "jquery";
 
 import AccountsUIWrapper from "./AccountsUIWrapper.js";
 
@@ -18,8 +17,6 @@ class Header extends Component {
 
 	handleHome() {
 		this.props.goToGame(null);
-		// $("myModal")
-		// 	.modal();
 	}
 
 	handleRestart() {
@@ -35,13 +32,15 @@ class Header extends Component {
 		return (
 			<div className="header-rc row">
 				<div className="col">
-					<button
-						className="btn"
-						title="Home"
-						type="button"
-						onClick={this.handleHome}>
-						<i className="fa fa-home fa-2x"></i>
-					</button>
+					{Meteor.user() &&
+						<button
+							className="btn"
+							title="Home"
+							type="button"
+							onClick={this.handleHome}>
+							<i className="fa fa-home fa-2x"></i>
+						</button>
+					}
 					{this.props.inLobby === false && this.props.playing === false &&
 						<span>
 							{this.props.host === Meteor.user().username &&

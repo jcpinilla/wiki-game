@@ -32,6 +32,9 @@ class Header extends Component {
 		return (
 			<div className="header-rc row">
 				<div className="col">
+					<AccountsUIWrapper />
+				</div>
+				<div className="col text-right">
 					{Meteor.user() &&
 						<button
 							className="btn"
@@ -61,9 +64,6 @@ class Header extends Component {
 							</button>
 						</span>
 					}
-				</div>
-				<div className="col text-right">
-					<AccountsUIWrapper />
 				</div>
 			</div>
 		);

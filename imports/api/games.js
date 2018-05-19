@@ -11,7 +11,7 @@ if (Meteor.isServer) {
 
 Meteor.methods({
 	"games.create"(language) {
-		if (!this.userId) {
+		if (!Meteor.user()._id) {
 			throw new Meteor.Error("not-authorized");
 		}
 
@@ -39,7 +39,7 @@ Meteor.methods({
 		return gameId;
 	},
 	"games.join"(gameId) {
-		if (!this.userId) {
+		if (!Meteor.user()._id) {
 			throw new Meteor.Error("not-authorized");
 		}
 

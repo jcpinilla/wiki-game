@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import { Meteor } from "meteor/meteor";
+import JSAlert from "js-alert";
 
 export default class Join extends Component {
 	constructor(props) {
@@ -22,7 +23,7 @@ export default class Join extends Component {
 				if (res.ok) {
 					this.props.goToGame(gameIdInput);
 				} else {
-					alert(res.errorMessage);
+					JSAlert.alert(res.errorMessage, null, JSAlert.Icons.Failed);
 				}
 			}
 		);

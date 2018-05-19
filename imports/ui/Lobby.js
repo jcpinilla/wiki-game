@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import { Meteor } from "meteor/meteor";
+import JSAlert from "js-alert";
 
 import Summary from "./Summary.js";
 
@@ -41,7 +42,7 @@ export default class Lobby extends Component {
 		let startPageInput = this.state.startPageInput.trim();
 		let endPageInput = this.state.endPageInput.trim();
 		if (startPageInput === "" || endPageInput === "") {
-			alert("Both pages must be defined.");
+			JSAlert.alert("Both pages must be defined.", null, JSAlert.Icons.Warning);
 			return;
 		}
 		let language = this.props.language;
@@ -51,7 +52,7 @@ export default class Lobby extends Component {
 			endPageInput,
 			(err, res) => {
 				if (res.errorMessage) {
-					alert(res.errorMessage);
+					JSAlert.alert(res.errorMessage, null, JSAlert.Icons.Failed);
 				} else {
 					let gameId = this.props.gameId;
 					Meteor.call("games.setStartEndPages",

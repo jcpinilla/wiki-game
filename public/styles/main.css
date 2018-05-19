@@ -79,6 +79,9 @@ body {
 .header-rc {
 	margin-bottom: 20px;
 }
+.header-rc button {
+	margin: 5px;
+}
 .accounts-ui-wrapper-rc {
 	font-size: 40px;
 }

@@ -51,7 +51,7 @@ Meteor.methods({
 		}
 		if (!game.inLobby) {
 			return {
-				errorMessage: "Lobby time for this game is over."
+				errorMessage: "The game is not in lobby time."
 			};
 		}
 		let players = game.players;
@@ -171,5 +171,21 @@ Meteor.methods({
 				});
 		}
 		Games.update(gameId, {$set: {graph}});
+	},
+	"games.restart"(gameId) {
+		Games.update(gameId, {$set: {
+			inLobby: true,
+			playing: false,
+			winner: null,
+			startTime: null,
+			endTime: null,
+
+			startPage: null,
+			endPage: null,
+			graph: {
+				nodes: [],
+				links: []
+			}
+		}});
 	}
 });

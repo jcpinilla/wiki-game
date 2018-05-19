@@ -27,7 +27,9 @@ class App extends Component {
 		let currentUser = this.props.currentUser;
 		return (
 			<div className="container-fluid">
-				<Header goToGame={this.goToGame}/>
+				<Header
+					gameId={gameId}
+					goToGame={this.goToGame}/>
 				{currentUser &&
 					(gameId ?
 						<CurrentGame gameId={gameId} />:

@@ -1,5 +1,5 @@
 body {
-	margin: 40px 50px;
+	padding: 40px 50px;
 	background-color: #fafafa;
 }
 
@@ -58,4 +58,27 @@ body {
 .current-page-links input {
 	margin-top: 10px;
 	margin-bottom: 15px;
+}
+
+/**/
+.node-info-rc,
+.link-info-rc {
+	margin-top: 50px;
+}
+.other-visits,
+.other-travels {
+	margin-top: 5px;
+	font-size: 20px;
+}
+
+.created-by {
+	margin-top: 30px;
+}
+
+/**/
+.header-rc {
+	margin-bottom: 20px;
+}
+.accounts-ui-wrapper-rc {
+	font-size: 40px;
 }

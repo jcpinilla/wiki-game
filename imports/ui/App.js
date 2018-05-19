@@ -4,8 +4,7 @@ import { withTracker } from "meteor/react-meteor-data";
 
 import CreateJoin from "./CreateJoin.js";
 import CurrentGame from "./CurrentGame.js";
-import AccountsUIWrapper from "./AccountsUIWrapper.js";
-
+import Header from "./Header.js";
 import Overview from "./Overview.js";
 
 class App extends Component {
@@ -28,12 +27,26 @@ class App extends Component {
 		let currentUser = this.props.currentUser;
 		return (
 			<div className="container-fluid">
-				<AccountsUIWrapper />
+				<Header goToGame={this.goToGame}/>
 				{currentUser &&
 					(gameId ?
 						<CurrentGame gameId={gameId} />:
 						<CreateJoin goToGame={this.goToGame} />)
 				}
+			  <div className="modal fade" id="myModal">
+			    <div className="modal-dialog">
+			      <div className="modal-content">
+			      
+			        
+			        
+			        <div className="modal-body">
+			        	<button type="button" className="close" data-dismiss="modal">×</button>
+			          Modal body..
+			        </div>
+			        
+			      </div>
+			    </div>
+			  </div>
 			</div>
 		);
 		/*
@@ -199,7 +212,7 @@ class App extends Component {
 				},
 			]
 		};
-
+		
 
 		return (
 			<Overview 
@@ -211,7 +224,7 @@ class App extends Component {
 				endPage={endPage}
 				graph={graph} />
 		);
-	*/
+		*/
 	}
 }
 

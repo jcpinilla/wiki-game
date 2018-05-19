@@ -59,7 +59,6 @@ export default class Lobby extends Component {
 						res.startPage,
 						res.endPage
 					);
-					console.log("Pages validated");
 					this.setState({
 						startPageInput: "",
 						endPageInput: ""
@@ -131,7 +130,7 @@ export default class Lobby extends Component {
 					{pagesValidated &&
 						<div>
 							<h2>Go from {startPage} to {endPage}</h2>
-							<h5>Waiting for {isHost ? "you" : <em>host</em>} to start the game</h5>
+							<h5>Waiting for {isHost ? "you" : <em>{host}</em>} to start the game</h5>
 						</div>
 					}
 					{

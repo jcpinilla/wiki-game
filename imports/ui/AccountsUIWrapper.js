@@ -15,6 +15,6 @@ export default class AccountsUIWrapper extends Component {
   }
   render() {
     // Just render a placeholder container that will be filled in
-    return <div ref="container" />;
+    return <div className="accounts-ui-wrapper-rc" ref="container" />;
   }
 }

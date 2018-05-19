@@ -54,27 +54,30 @@ export default class Overview extends Component {
 		}
 		return (
 			<div>
-				<div>
-					{winner ?
-						<h1>{winner} has won!</h1> :
-						<h1>{host} has ended the game</h1>
-					}
-					<h2>
-						Total time:{" "}
-						{formatDuration(startTime, endTime)}
-					</h2>
-					<p>Start page: {startPage}</p>
-					<p>End page: {endPage}</p>
+				<div className="row">
+					<div className="col-lg-3">
+						{winner ?
+							<h1>{winner} has won!</h1> :
+							<h1>{host} has ended the game</h1>
+						}
+						<h3>
+							Total time:{" "}
+							{formatDuration(startTime, endTime)}
+						</h3>
+						<h4>From {startPage} to {endPage}</h4>
+						{selected}
+					</div>
+					<div className="col-lg-9">
+						<div>
+							<Graph
+								startPage={startPage}
+								endPage={endPage}
+								graph={graph}
+								setSelectedNode={this.setSelectedNode}
+								setSelectedLink={this.setSelectedLink} />
+						</div>
+					</div>
 				</div>
-				<div>
-					<Graph
-						startPage={startPage}
-						endPage={endPage}
-						graph={graph}
-						setSelectedNode={this.setSelectedNode}
-						setSelectedLink={this.setSelectedLink} />
-				</div>
-				{selected}
 			</div>
 		);
 	}

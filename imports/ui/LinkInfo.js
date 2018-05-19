@@ -16,15 +16,22 @@ export default class LinkInfo extends Component {
 				travel1.traveledAt.getTime()-travel2.traveledAt.getTime());
 		}
 		return (
-			<div>
-				<h1>Link from {source} to {target}</h1>
-				<h2>Created by {createdBy} after {formatDuration(startTime, createdAt)}</h2>
+			<div className="link-info-rc">
+				<h1>Link from</h1>
+				<h3>{source}</h3>
+				<h1>to</h1>
+				<h3>{target}</h3>
+				<h3 className="created-by">Created by {createdBy} after {formatDuration(startTime, createdAt)}</h3>
 				{otherTravels && otherTravels.length !== 0 &&
 					<div>
-						<h3>Others that used the same link:</h3>
+						<h4>Others that used the same link:</h4>
 						{
 							otherTravels.map(travel => 
-								<p>{travel.traveledBy} after {formatDuration(startTime, travel.traveledAt)}</p>
+								<p
+									key={createdAt}
+									className="other-travels">
+									<em>{travel.traveledBy}</em> after {formatDuration(startTime, travel.traveledAt)}
+								</p>
 							)
 						}
 					</div>

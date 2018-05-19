@@ -7,7 +7,6 @@ Meteor.methods({
 		let endPageQuery = endPage.replace(/\s/g, "%20");
 		let resStartPage = HTTP.get(`https://${language}.wikipedia.org/w/api.php?action=query&format=json&titles=${startPageQuery}`);
 		let startPagesObject = resStartPage.data.query.pages;
-		console.log(startPagesObject);
 		if ("-1" in startPagesObject) {
 			return {
 				errorMessage: `${startPage} page does not exist.`

@@ -40,6 +40,9 @@ export default class Create extends Component {
 								onChange={this.handleLanguageChange}>
 								<option value="es">Spanish</option>
 								<option value="en">English</option>
+								<option value="fr">French</option>
+								<option value="it">Italian</option>
+								<option value="de">German</option>
 							</select>
 						</label>
 					</div>

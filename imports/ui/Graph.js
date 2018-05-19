@@ -20,16 +20,23 @@ export default class Graph extends Component {
 	}
 
 	componentDidMount() {
-		this.svg = d3.select("#graph")
-			.attr("width", 500)
-			.attr("height", 200);
+		this.svg = d3.select("#graph");
+		let widthWithPx = d3.select(this.svg.node().parentNode)
+			.style("width");
+
+		this.width = +widthWithPx.slice(0, widthWithPx.length-2);
+		this.height = 700;
+		this.svg
+			.style("border", "2px dotted black")
+			.attr("width", this.width)
+			.attr("height", this.height);
 
 		this.width = +this.svg.attr("width");
 		this.height = +this.svg.attr("height");
 
 		this.dashArray = "6,1";
-		this.centerX = this.width / 2;
-		this.centerY = this.height / 2;
+		this.initialCenterX = this.width / 2;
+		this.initialCenterY = this.height / 3;
 		this.circleGrowthFactor = 1.5;
 		this.lineGrowthFactor = 2;
 		
@@ -42,13 +49,13 @@ export default class Graph extends Component {
 		this.color = d3.scaleOrdinal(d3.schemeCategory20);
 
 		this.simulation = d3.forceSimulation()
-			.force("center", d3.forceCenter(this.centerX, this.centerY))
+			.force("center", d3.forceCenter(this.initialCenterX, this.initialCenterY))
 			.force("collide", d3.forceCollide(this.baseRadius+15))
 			.force("charge", d3.forceManyBody()
 				.strength(-50))
 			.force("link", d3.forceLink()
-				.id(d => d.page)
-				.strength(0.7));
+				.id(d => d.page));
+				// .strength(0.7));
 		this.update();
 	}
 
@@ -61,8 +68,8 @@ export default class Graph extends Component {
 				break;
 			}
 		}
-		startNode.fx = this.centerX;
-		startNode.fy = this.centerY;
+		startNode.fx = this.initialCenterX;
+		startNode.fy = this.initialCenterY;
 
 		let svg = this.svg;
 		let simulation = this.simulation;
@@ -136,7 +143,6 @@ export default class Graph extends Component {
 	}
 
 handleMouseOverCircle(d) {
-	console.log("in");
 	d3.select(d3.event.target.parentNode)
 		.select("circle")
 			.transition()
@@ -145,7 +151,6 @@ handleMouseOverCircle(d) {
 }
 
 handleMouseOutCircle(d) {
-	console.log("out");
 	let isText = d3.event.target.tagName === "text";
 	if (isText) return;
 	d3.select(d3.event.target)
@@ -220,11 +225,20 @@ handleMouseOutLine(l) {
 
 	dragged(d) {
 		let startPage = this.props.startPage;
-		d.fx = d3.event.x;
-		d.fy = d3.event.y;
 		if (d.page === startPage) {
+			if (d3.event.x < 0
+				|| d3.event.x > this.width
+				|| d3.event.y < 0
+				|| d3.event.y > this.height) {
+				return;
+			}
+			d.fx = d3.event.x;
+			d.fy = d3.event.y;
 			this.simulation.force("center").x(d.x);
 			this.simulation.force("center").y(d.y);
+		} else {
+			d.fx = d3.event.x;
+			d.fy = d3.event.y;
 		}
 	}
 

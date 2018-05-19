@@ -18,17 +18,19 @@ export default class NodeInfo extends Component {
 				visit1.visitedAt.getTime()-visit2.visitedAt.getTime());
 		}
 		return (
-			<div>
+			<div className="node-info-rc">
 				<h1>{page}</h1>
 				{page !== startPage &&
 					<div>
 						<h2>Discovered by <em>{discoveredBy}</em> after {formatDuration(startTime, discoveredAt)}</h2>
 						{otherVisits.length !== 0 &&
 							<div>
-								<h3>Also visited by</h3>
+								<h4>Visited by {otherVisits.length} other {otherVisits.length === 1 ? "person" : "people"}:</h4>
 								{
 									otherVisits.map(visit =>
-										<p key={visit.visitedBy}>
+										<p
+											className="other-visits"
+											key={visit.visitedBy}>
 											<em>{visit.visitedBy}</em> after {formatDuration(startTime, visit.visitedAt)}
 										</p>
 									)

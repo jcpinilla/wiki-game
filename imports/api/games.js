@@ -49,6 +49,11 @@ Meteor.methods({
 				errorMessage: `The game with ID ${gameId} doesn't exist.`
 			};
 		}
+		if (!game.inLobby) {
+			return {
+				errorMessage: "Lobby time for this game is over."
+			};
+		}
 		let players = game.players;
 		let username = Meteor.user().username;
 		let alreadyInGame = players.filter(p => p === username).length === 1;

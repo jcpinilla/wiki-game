@@ -15,6 +15,8 @@ export default class Navigator extends Component {
 		this.handleKeyPress = this.handleKeyPress.bind(this);
 		this.handleEndGameByHost = this.handleEndGameByHost.bind(this);
 		this.handleFilterChange = this.handleFilterChange.bind(this);
+
+		this.backKey = "Shift";
 	}
 
 	handleFilterChange(event) {
@@ -33,7 +35,7 @@ export default class Navigator extends Component {
 	}
 
 	handleKeyPress(event) {
-		if (event.key === "w") {
+		if (event.key === this.backKey) {
 			this.goBack();
 		}
 	}
@@ -59,7 +61,8 @@ export default class Navigator extends Component {
 					stack.push(page);
 					return {
 						stack,
-						links
+						links,
+						filter: ""
 					};
 				});
 			}
@@ -79,7 +82,8 @@ export default class Navigator extends Component {
 					newStack.pop();
 					return {
 						stack: newStack,
-						links
+						links,
+						filter: ""
 					};
 				});
 			}
@@ -103,17 +107,22 @@ export default class Navigator extends Component {
 		let isHost = host === Meteor.user().username;
 		let links = this.state.links;
 		let filter = this.state.filter;
-		if (links && filter) {
-			links = links
+		if (this.filterInput) {
+			this.filterInput.focus();
+		}
+		if (links) {
+			if (filter) {
+				links = links
 				.filter(link => link.toLowerCase()
 					.includes(filter.toLowerCase()));
+			}
 		}
 		return (
 			<div className="navigator-rc">
 				<div className="row">
 					<div className="col-lg-4">
 						<h3>Go from {startPage} to {endPage}</h3>
-						<p><em>Press <kbd>w</kbd> to go back on history</em></p>
+						<p><em>Press <kbd>{this.backKey}</kbd> to go back on history</em></p>
 					</div>
 					<div className="col-lg-4 text-center">
 						<h1>{currentPage}</h1>
@@ -134,8 +143,9 @@ export default class Navigator extends Component {
 					<div className="current-page-links">
 						<h2>Links for this page:</h2>
 						<div>
-							<div className="filter-container text-center">
+							<div className="text-center">
 								<input
+									ref={input => this.filterInput = input}
 									value={filter}
 									placeholder="Filter"
 									onChange={this.handleFilterChange}

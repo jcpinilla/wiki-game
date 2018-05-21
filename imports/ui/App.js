@@ -39,6 +39,9 @@ class App extends Component {
 				}
 			</div>
 		);
+/**
+Todo este código está comentado, si ya no lo están utilizando podrían haberlo eliminado.
+**/
 		/*
 		let winner = "b";
 		let host = "h";

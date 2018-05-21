@@ -31,6 +31,7 @@ export default class Sketch extends Component {
 				s.text("W", s.width/2, s.height/2);
 			};
 		};
+		//Me parece muy chevere que hayan utilizado p5 para hacer animaciones.
 		new p5(sketch, "sketch");	
 	}
 

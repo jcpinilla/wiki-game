@@ -3,8 +3,8 @@ import { HTTP } from "meteor/http";
 
 Meteor.methods({
 	"wiki.validate"(language, startPage, endPage) {
-		let startPageQuery = startPage.replace(/\s/g, "%20");
-		let endPageQuery = endPage.replace(/\s/g, "%20");
+		let startPageQuery = encodeURI(startPage);
+		let endPageQuery = encodeURI(endPage);
 		let resStartPage = HTTP.get(`https://${language}.wikipedia.org/w/api.php?action=query&format=json&titles=${startPageQuery}`);
 		let startPagesObject = resStartPage.data.query.pages;
 		if ("-1" in startPagesObject) {
@@ -43,7 +43,8 @@ Meteor.methods({
 		};
 	},
 	"wiki.getLinks"(language, page) {
-		let res = HTTP.get(`https://${language}.wikipedia.org/w/api.php?action=query&format=json&generator=links&gpllimit=500&titles=${page}`);
+    const pageQuery = encodeURI(page);
+		let res = HTTP.get(`https://${language}.wikipedia.org/w/api.php?action=query&format=json&generator=links&gpllimit=500&titles=${pageQuery}`);
 		let linksObject = res.data.query.pages;
 		let links = [];
 		for (let page in linksObject) {
@@ -53,7 +54,8 @@ Meteor.methods({
 		return links;
 	},
 	"wiki.getSummary"(language, page) {
-		let res = HTTP.get(`https://${language}.wikipedia.org/w/api.php?format=json&action=query&prop=extracts&exintro=&explaintext=&titles=${page}`);
+    const pageQuery = encodeURI(page);
+		let res = HTTP.get(`https://${language}.wikipedia.org/w/api.php?format=json&action=query&prop=extracts&exintro=&explaintext=&titles=${pageQuery}`);
 		let pageNumber = null;
 		for (let pn in res.data.query.pages) {
 			pageNumber = pn;

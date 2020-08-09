@@ -26,3 +26,4 @@ MIT
 
 **Free Software, This project is licensed under the terms of the MIT license.**
 See [LICENSE](https://raw.githubusercontent.com/jcpinilla/wiki-game/master/LICENSE) for more.
+

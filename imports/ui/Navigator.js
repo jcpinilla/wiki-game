@@ -16,7 +16,7 @@ export default class Navigator extends Component {
 		this.handleEndGameByHost = this.handleEndGameByHost.bind(this);
 		this.handleFilterChange = this.handleFilterChange.bind(this);
 
-		this.backKey = "Control";
+		this.backKeyCode = 40;
 	}
 
 	handleFilterChange(event) {
@@ -35,7 +35,7 @@ export default class Navigator extends Component {
 	}
 
 	handleKeyPress(event) {
-		if (event.key === this.backKey) {
+		if (event.keyCode === this.backKeyCode) {
 			this.goBack();
 		}
 	}
@@ -122,7 +122,7 @@ export default class Navigator extends Component {
 				<div className="row">
 					<div className="col-lg-4">
 						<h3>Go from {startPage} to {endPage}</h3>
-						<p><em>Press <kbd>Ctrl</kbd> to go to previous article</em></p>
+						<p><em>Press <kbd>Down</kbd> to go to previous article</em></p>
 					</div>
 					<div className="col-lg-4 text-center">
 						<h1>{currentPage}</h1>

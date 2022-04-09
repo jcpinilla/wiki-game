@@ -7,6 +7,9 @@ Meteor.methods({
 		let endPageQuery = encodeURI(endPage);
 		let resStartPage = HTTP.get(`https://${language}.wikipedia.org/w/api.php?action=query&format=json&titles=${startPageQuery}`);
 		let startPagesObject = resStartPage.data.query.pages;
+		/*En lugar de retornar un objeto con un mensaje de error, podrían utilizar los mensajes de error personalizables que ofrece meteor.
+		La sintaxis es: throw new Meteor.Error('pants-not-found', "Can't find my pants");
+		*/
 		if ("-1" in startPagesObject) {
 			return {
 				errorMessage: `${startPage} page does not exist.`
@@ -14,6 +17,9 @@ Meteor.methods({
 		}
 		let resEndPage = HTTP.get(`https://${language}.wikipedia.org/w/api.php?action=query&format=json&titles=${endPageQuery}`);
 		let endPagesObject= resEndPage.data.query.pages;
+		/*En lugar de retornar un objeto con un mensaje de error, podrían utilizar los mensajes de error personalizables que ofrece meteor.
+		La sintaxis es: throw new Meteor.Error('pants-not-found', "Can't find my pants");
+		*/
 		if ("-1" in endPagesObject) {
 			return {
 				errorMessage: `${endPage} page does not exist.`
